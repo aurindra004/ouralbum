@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OUR LITTLE ALBUM 🌸</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&family=Playfair+Display:ital@0;1&family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <div class="book">
+            <header class="header">
+                <h1 class="header__title">our little album</h1>
+                <p class="header__sub">tempat menyimpan cerita <i class="fa-regular fa-heart"></i></p>
+            </header>
+        
+            <div class="album-grid" id="albumGrid"></div>
+        
+            <div class="actions">
+                <button class="btn" id="randomAlbumBtn"><i class="fa-regular fa-star"></i> Buka album acak</button>
+                <button class="btn" id="showerBtn"><i class="fa-regular fa-heart"></i> Hujan hati</button>
+                <!-- <button class="btn" id="jokeBtn"><i class="fa-regular fa-face-smile"></i> Kejutan lucu</button> -->
+            </div>
+        
+            <footer class="footer">
+                <p>dibuat dengan <i class="fa-regular fa-heart"></i> dan <span id="randomQuote"></span></p>
+            </footer>
+        </div>
+    
+        <!-- Modal album -->
+        <div class="modal" id="albumModal">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h2 class="modal__title" id="modalAlbumTitle">Judul Album</h2>
+                    <button class="modal__close" id="closeModalBtn">&times;</button>
+                </div>
+            
+                <div class="carousel">
+                    <div class="carousel__main" id="carouselMain">
+                        <img id="modalImage" src="" alt="foto kenangan" class="carousel__image">
+                    </div>
+                
+                    <div class="carousel__dots" id="dotContainer"></div>
+                
+                    <div class="carousel__caption" id="modalCaption">
+                        <i class="fa-regular fa-message"></i>
+                        <span id="captionText"></span>
+                    </div>
+                </div>
+            
+                <div class="modal__nav">
+                    <button class="modal__nav-btn" id="prevPhotoBtn"><i class="fa-regular fa-circle-left"></i> Sebelumnya</button>
+                    <button class="modal__nav-btn" id="nextPhotoBtn">Berikutnya <i class="fa-regular fa-circle-right"></i></button>
+                </div>
+                <div class="modal__nav modal__nav--secondary">
+                    <button class="modal__nav-btn" id="prevAlbumBtn"><i class="fa-regular fa-arrow-left"></i> Album sebelumnya</button>
+                    <button class="modal__nav-btn" id="nextAlbumBtn">Album berikutnya <i class="fa-regular fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="bear" id="bear">🧸</div>
+    
+        <script src="script.js"></script>
+    </body>
+</html>
