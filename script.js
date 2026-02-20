@@ -201,8 +201,8 @@ bear.addEventListener('click', () => {
     const messages = [
         "🧸: Halo! Aku beruang penjaga kenangan!",
         "🧸: Kamu lucu banget hari ini",
-        "🧸: Coba klik album, ada kejutan lho",
-        "🧸: Aku suka kamu... sama es krim",
+        "🧸: jangan lupa hati hati",
+        "🧸: jangan lupa mandi hari ini",
         "🧸: Jangan sedih, aku peluk kamu 🤗"
     ];
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
