@@ -183,17 +183,41 @@ document.querySelector('.book').addEventListener('click', (e) => {
     }
 });
 
-// Fitur kejutan lucu (tombol baru)
-// document.getElementById('jokeBtn').addEventListener('click', () => {
-//     const randomIndex = Math.floor(Math.random() * funnyMessages.length);
-//     const message = funnyMessages[randomIndex];
-//     alert('💬 ' + message);
-//     // tambah efek beruang
-//     const bear = document.getElementById('bear');
-//     bear.style.transform = 'scale(1.5)';
-//     setTimeout(() => bear.style.transform = 'scale(1)', 300);
-//     playPop();
-// });
+// -------------------------------
+// Swipe gesture untuk foto di modal
+// -------------------------------
+let touchStartX = 0, touchStartY = 0;
+let touchEndX = 0, touchEndY = 0;
+const swipeThreshold = 50; // minimal jarak geser agar dianggap swipe
+
+const carouselMain = document.getElementById('carouselMain');
+if (carouselMain) {
+    carouselMain.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    carouselMain.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, { passive: true });
+}
+
+function handleSwipe() {
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+    // Abaikan jika geser lebih vertikal atau jarak horizontal terlalu kecil
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+        if (diffX > 0) {
+            // Geser ke kanan -> foto sebelumnya
+            prevPhotoBtn.click();
+        } else {
+            // Geser ke kiri -> foto berikutnya
+            nextPhotoBtn.click();
+        }
+    }
+}
 
 // Karakter beruang interaktif
 const bear = document.getElementById('bear');
