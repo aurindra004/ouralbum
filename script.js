@@ -3,12 +3,12 @@ const albums = [
         id: 0,
         title: "first meet",
         date: "20 Februari 2026",
-        cover: "foto/album1/1.jpg",
+        cover: "foto/album1/cover.jpeg",
         photos: [
-            { url: "foto/album1/1.jpg", caption: "" },
-            { url: "foto/album1/1.jpg", caption: "" },
-            { url: "foto/album1/1.jpg", caption: "" },
-            { url: "foto/album1/1.jpg", caption: "" }
+            { url: "foto/album1/cover.jpeg", caption: "pengalaman pertama bikin gelass" },
+            // { url: "foto/album1/1.jpg", caption: "" },
+            // { url: "foto/album1/1.jpg", caption: "" },
+            // { url: "foto/album1/1.jpg", caption: "" }
         ]
     },
     // Di sini bisa tambah album lain sesuai kebutuhan
