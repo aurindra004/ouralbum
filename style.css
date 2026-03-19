@@ -15,126 +15,132 @@ body {
     color: #4a4a4a;
 }
 
-.book {
-    max-width: 1300px;
+.book-container {
+    max-width: 900px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(255, 180, 180, 0.2);
-    padding: 2.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.header__title {
-    font-family: 'Pacifico', cursive;
-    font-size: 3.5rem;
-    font-weight: 400;
-    color: #b76e79;
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 0 #ffe2e2;
-}
-
-.header__sub {
-    font-size: 1.2rem;
-    color: #a15c6e;
-    font-weight: 300;
-}
-
-.header__sub i {
-    color: #e5989b;
-    margin-left: 0.5rem;
-}
-
-.album-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin: 2.5rem 0;
-}
-
-.album-card {
-    background: white;
-    border-radius: 28px;
-    overflow: hidden;
-    box-shadow: 0 12px 24px -8px rgba(150, 80, 90, 0.2);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    position: relative;
-}
-
-.album-card:hover {
-    transform: translateY(-6px) rotate(0.5deg);
-    box-shadow: 0 20px 30px -8px #ddb0b5;
-}
-
-.album-card::after {
-    content: "💖";
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.album-card:hover::after {
-    opacity: 1;
-}
-
-.album-card__cover {
-    width: 100%;
-    height: 240px;
-    background-color: #f5dadf;
+    padding: 2rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+}
+
+.book {
+    position: relative;
+    width: 100%;
+    height: 550px;
+    transform-style: preserve-3d;
+    perspective: 3000px;
+    margin-bottom: 2rem;
+    background: #8b5a2b; /* warna sampul coklat tua */
+    border-radius: 10px 20px 20px 10px;
+    box-shadow: 
+        10px 10px 30px rgba(0,0,0,0.5),
+        inset -2px -2px 10px rgba(0,0,0,0.3),
+        inset 2px 2px 10px rgba(255,255,240,0.3);
+    border-left: 4px solid #5d3a1a; /* punggung buku */
+}
+
+/* efek halaman */
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #fff9ef;
+    border-radius: 0 8px 8px 0;
+    padding: 2rem;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    backface-visibility: hidden;
+    box-shadow: 
+        inset -2px 0 10px rgba(0,0,0,0.1),
+        5px 5px 15px rgba(0,0,0,0.2);
+    border-left: 1px solid #c9ad9a;
+    overflow-y: auto;
+    cursor: pointer;
+}
+
+/* halaman aktif (terbuka) */
+.page.active {
+    transform: rotateY(0deg);
+    z-index: 10;
+}
+
+/* halaman yang sudah dibalik ke kanan */
+.page.flipped {
+    transform: rotateY(-180deg);
+    z-index: 5;
+}
+
+/* halaman yang akan dibalik ke kiri */
+.page.prev {
+    transform: rotateY(180deg);
+    z-index: 5;
+}
+
+/* konten album */
+.album-item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    border: 1px solid #ffe3e3;
+}
+
+.album-item:hover {
+    transform: scale(1.02);
+}
+
+.album-cover {
+    width: 100%;
+    height: 280px;
+    background: #f5dadf;
     overflow: hidden;
 }
 
-.album-card__cover img {
+.album-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s;
 }
 
-.album-card:hover .album-card__cover img {
-    transform: scale(1.05);
+.album-item:hover .album-cover img {
+    transform: scale(1.1);
 }
 
-.album-card__info {
-    padding: 1.8rem 1.5rem 2rem;
+.album-info {
+    padding: 1.8rem 1.5rem;
     background: #fffafc;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.album-card__title {
+.album-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 500;
     color: #b76e79;
     line-height: 1.2;
-    margin-bottom: 0.5rem;
 }
 
-.album-card__date {
-    font-size: 0.9rem;
+.album-date {
+    font-size: 1rem;
     color: #b4828f;
-    letter-spacing: 0.3px;
-    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.4rem;
 }
 
-.album-card__count {
+.album-count {
     font-size: 1rem;
     color: #996d7a;
     border-top: 1px dashed #e5c5cc;
@@ -144,18 +150,62 @@ body {
     gap: 0.5rem;
 }
 
+/* navigasi */
+.book-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+.btn-nav {
+    background: white;
+    border: 2px solid #f0c0c7;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #b45f6b;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(255,200,210,0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.btn-nav:hover {
+    background: #fff0f3;
+    border-color: #e5989b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px #ffd9e2;
+}
+
+.page-indicator {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #a75868;
+    background: #ffeef2;
+    padding: 0.4rem 1.8rem;
+    border-radius: 40px;
+    border: 1px solid #fbc1cb;
+    box-shadow: inset 0 2px 5px rgba(255,255,255,0.8);
+}
+
 .actions {
     display: flex;
     gap: 1rem;
     justify-content: center;
-    margin: 2rem 0 1.5rem;
+    margin: 1.5rem 0;
     flex-wrap: wrap;
 }
 
 .btn {
     background: white;
     border: 1px solid #f0c0c7;
-    padding: 0.9rem 2rem;
+    padding: 0.8rem 2rem;
     border-radius: 50px;
     font-size: 1rem;
     font-weight: 500;
@@ -177,7 +227,6 @@ body {
 
 .footer {
     text-align: center;
-    margin-top: 2.5rem;
     color: #ab7b87;
     font-size: 0.95rem;
 }
@@ -192,7 +241,7 @@ body {
     color: #b76e79;
 }
 
-/* Modal */
+/* modal */
 .modal {
     display: none;
     position: fixed;
@@ -214,7 +263,7 @@ body {
     max-height: 90vh;
     border-radius: 48px;
     box-shadow: 0 30px 50px rgba(180, 100, 120, 0.25);
-    padding: 2rem 2rem 2.2rem;
+    padding: 2rem;
     border: 2px solid white;
     overflow-y: auto;
 }
@@ -250,7 +299,6 @@ body {
     transform: rotate(90deg) scale(1.2);
 }
 
-/* Carousel */
 .carousel {
     display: flex;
     flex-direction: column;
@@ -272,10 +320,7 @@ body {
 .carousel__image {
     max-width: 100%;
     max-height: 60vh;
-    width: auto;
-    height: auto;
     object-fit: contain;
-    display: block;
 }
 
 .carousel__dots {
@@ -283,7 +328,6 @@ body {
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin: 0.5rem 0;
 }
 
 .dot {
@@ -310,7 +354,6 @@ body {
     color: #6d4c57;
     border: 1px solid #ffd0da;
     box-shadow: inset 0 1px 5px #ffe3ea;
-    min-height: 5rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -327,10 +370,6 @@ body {
     justify-content: center;
     margin-top: 1.5rem;
     flex-wrap: wrap;
-}
-
-.modal__nav--secondary {
-    margin-top: 0.8rem;
 }
 
 .modal__nav-btn {
@@ -351,26 +390,10 @@ body {
 .modal__nav-btn:hover {
     background: #ffe3ea;
     border-color: #e5989b;
-    transform: scale(0.98) translateY(2px);
+    transform: scale(0.98);
 }
 
-/* falling hearts */
-.heart {
-    position: fixed;
-    font-size: 1.8rem;
-    user-select: none;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fall 4s linear forwards;
-    color: #ff9eb5;
-}
-
-@keyframes fall {
-    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-}
-
-/* karakter beruang */
+/* bear dan hati */
 .bear {
     position: fixed;
     bottom: 20px;
@@ -390,7 +413,6 @@ body {
     transform: scale(0.9);
 }
 
-/* tooltip lucu */
 .tooltip {
     position: absolute;
     background: white;
@@ -404,11 +426,31 @@ body {
     z-index: 1000;
 }
 
+.heart {
+    position: fixed;
+    font-size: 1.8rem;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall 4s linear forwards;
+    color: #ff9eb5;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
 /* responsif */
-@media (max-width: 600px) {
-    .book { padding: 1.5rem; }
-    .header__title { font-size: 2.4rem; }
-    .modal__content { padding: 1.5rem; }
-    .modal__title { font-size: 1.8rem; }
-    .bear { font-size: 2.5rem; bottom: 10px; right: 10px; }
+@media (max-width: 700px) {
+    .book { height: 500px; }
+    .album-cover { height: 220px; }
+    .album-title { font-size: 1.8rem; }
+}
+
+@media (max-width: 500px) {
+    .book { height: 450px; }
+    .album-cover { height: 180px; }
+    .album-title { font-size: 1.5rem; }
+    .book-nav { gap: 1rem; }
+    .btn-nav { padding: 0.6rem 1.2rem; }
 }

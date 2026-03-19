@@ -6,56 +6,128 @@ const albums = [
         cover: "foto/album1/cover.jpeg",
         photos: [
             { url: "foto/album1/cover.jpeg", caption: "pengalaman pertama bikin gelass" },
-            // { url: "foto/album1/1.jpg", caption: "" },
-            // { url: "foto/album1/1.jpg", caption: "" },
-            // { url: "foto/album1/1.jpg", caption: "" }
         ]
     },
-    // Di sini bisa tambah album lain sesuai kebutuhan
+    {
+        id: 1,
+        title: "tiba tiba jakarta",
+        date: "5 Maret 2026",
+        cover: "foto/album2/cover.jpg",
+        photos: [
+            { url: "foto/album2/cover.jpg", caption: "" },
+            { url: "foto/album2/1.jpg", caption: "" },
+            { url: "foto/album2/2.jpg", caption: "" },
+            { url: "foto/album2/3.jpg", caption: "" },
+            { url: "foto/album2/4.jpg", caption: "" },
+            { url: "foto/album2/5.jpg", caption: "" },
+        ]
+    }
 ];
 
-// Koleksi pesan lucu
-const funnyMessages = [
-    "kamu lebih manis dari kue 🍰",
-    "kalau baca ini, kamu lagi senyum 😊",
-    "aku suka kamu, tapi lebih suka es krim 🍦",
-    "hari ini aku belajar coding biar bisa bikin website ini",
-    "kamu itu lucu, bahkan kucing tetangga setuju 🐱",
-    "cinta kita seperti wifi, kadang hilang tapi selalu nyambung 📶",
-    "foto ini bikin aku kangen kamu",
-    "kalau kamu lagi sedih, ingat ada beruang kecil yang jagain 🧸",
-    "peluk virtual dari aku 🤗",
-    "jangan lupa makan, ya!",
-    "aku lagi mikirin kamu sekarang",
-    "kamu bikin hariku lebih berwarna 🌈"
-];
+// ========== BUKU ==========
+const book = document.getElementById('book');
+let currentPage = 0;
 
-// render grid
-const albumGrid = document.getElementById('albumGrid');
-
-function renderAlbums() {
-    albumGrid.innerHTML = albums.map(album => `
-        <div class="album-card" data-id="${album.id}">
-            <div class="album-card__cover">
-                <img src="${album.cover}" alt="${album.title}" loading="lazy">
+function renderBook() {
+    book.innerHTML = '';
+    albums.forEach((album, index) => {
+        const page = document.createElement('div');
+        page.className = 'page';
+        if (index === currentPage) {
+            page.classList.add('active');
+        } else if (index < currentPage) {
+            page.classList.add('flipped');
+        } else {
+            page.classList.add('prev');
+        }
+        page.dataset.id = album.id;
+        page.innerHTML = `
+            <div class="album-item">
+                <div class="album-cover">
+                    <img src="${album.cover}" alt="${album.title}" loading="lazy">
+                </div>
+                <div class="album-info">
+                    <h3 class="album-title">${album.title}</h3>
+                    <div class="album-date"><i class="fa-regular fa-calendar"></i> ${album.date}</div>
+                    <div class="album-count"><i class="fa-regular fa-image"></i> ${album.photos.length} momen</div>
+                </div>
             </div>
-            <div class="album-card__info">
-                <h3 class="album-card__title">${album.title}</h3>
-                <div class="album-card__date"><i class="fa-regular fa-calendar"></i> ${album.date}</div>
-                <div class="album-card__count"><i class="fa-regular fa-image"></i> ${album.photos.length} momen</div>
-            </div>
-        </div>
-    `).join('');
-
-    document.querySelectorAll('.album-card').forEach(card => {
-        card.addEventListener('click', () => {
-            openAlbum(parseInt(card.dataset.id));
-        });
+        `;
+        book.appendChild(page);
     });
-}
-renderAlbums();
 
-// modal elements
+    document.getElementById('pageIndicator').textContent = `Halaman ${currentPage + 1} dari ${albums.length}`;
+}
+
+function nextPage() {
+    if (currentPage < albums.length - 1) {
+        const current = document.querySelector(`.page[data-id="${albums[currentPage].id}"]`);
+        const next = document.querySelector(`.page[data-id="${albums[currentPage + 1].id}"]`);
+        
+        current.classList.remove('active');
+        current.classList.add('flipped');
+        
+        next.classList.remove('prev');
+        next.classList.add('active');
+        
+        currentPage++;
+        document.getElementById('pageIndicator').textContent = `Halaman ${currentPage + 1} dari ${albums.length}`;
+    } else {
+        alert('Sudah di halaman terakhir!');
+    }
+}
+
+function prevPage() {
+    if (currentPage > 0) {
+        const current = document.querySelector(`.page[data-id="${albums[currentPage].id}"]`);
+        const prev = document.querySelector(`.page[data-id="${albums[currentPage - 1].id}"]`);
+        
+        current.classList.remove('active');
+        current.classList.add('prev');
+        
+        prev.classList.remove('flipped');
+        prev.classList.add('active');
+        
+        currentPage--;
+        document.getElementById('pageIndicator').textContent = `Halaman ${currentPage + 1} dari ${albums.length}`;
+    } else {
+        alert('Sudah di halaman pertama!');
+    }
+}
+
+document.getElementById('nextPage').addEventListener('click', nextPage);
+document.getElementById('prevPage').addEventListener('click', prevPage);
+
+// Swipe gesture
+let touchStartX = 0;
+book.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+book.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+            prevPage();
+        } else {
+            nextPage();
+        }
+    }
+}, { passive: true });
+
+// Buka modal saat klik album
+book.addEventListener('click', (e) => {
+    const page = e.target.closest('.page');
+    if (page) {
+        const albumId = parseInt(page.dataset.id);
+        openAlbum(albumId);
+    }
+});
+
+renderBook();
+
+// ========== MODAL ==========
 const modal = document.getElementById('albumModal');
 const modalTitle = document.getElementById('modalAlbumTitle');
 const modalImage = document.getElementById('modalImage');
@@ -79,13 +151,13 @@ function openAlbum(id) {
 }
 
 function updateModal() {
-    const album = albums[currentAlbumId];
+    const album = albums.find(a => a.id === currentAlbumId);
+    if (!album) return;
     modalTitle.textContent = album.title;
     const photo = album.photos[currentPhotoIndex];
     modalImage.src = photo.url;
     captionText.textContent = photo.caption;
 
-    // update dots
     dotContainer.innerHTML = album.photos.map((_, idx) => {
         return `<span class="dot ${idx === currentPhotoIndex ? 'active' : ''}" data-index="${idx}"></span>`;
     }).join('');
@@ -98,28 +170,49 @@ function updateModal() {
     });
 }
 
-// navigasi foto
+function changePhotoWithAnimation(direction) {
+    const album = albums.find(a => a.id === currentAlbumId);
+    let newIndex;
+    if (direction === 'next') {
+        newIndex = (currentPhotoIndex + 1) % album.photos.length;
+    } else {
+        newIndex = (currentPhotoIndex - 1 + album.photos.length) % album.photos.length;
+    }
+
+    const carouselMain = document.getElementById('carouselMain');
+    carouselMain.classList.add('flip-' + direction);
+
+    setTimeout(() => {
+        currentPhotoIndex = newIndex;
+        updateModal();
+        carouselMain.classList.remove('flip-next', 'flip-prev');
+        carouselMain.classList.add('image-enter');
+        setTimeout(() => {
+            carouselMain.classList.remove('image-enter');
+        }, 300);
+    }, 400);
+}
+
 prevPhotoBtn.addEventListener('click', () => {
-    const album = albums[currentAlbumId];
-    currentPhotoIndex = (currentPhotoIndex - 1 + album.photos.length) % album.photos.length;
-    updateModal();
+    changePhotoWithAnimation('prev');
 });
 
 nextPhotoBtn.addEventListener('click', () => {
-    const album = albums[currentAlbumId];
-    currentPhotoIndex = (currentPhotoIndex + 1) % album.photos.length;
-    updateModal();
+    changePhotoWithAnimation('next');
 });
 
-// navigasi album
 prevAlbumBtn.addEventListener('click', () => {
-    currentAlbumId = (currentAlbumId - 1 + albums.length) % albums.length;
+    const currentIndex = albums.findIndex(a => a.id === currentAlbumId);
+    const newIndex = (currentIndex - 1 + albums.length) % albums.length;
+    currentAlbumId = albums[newIndex].id;
     currentPhotoIndex = 0;
     updateModal();
 });
 
 nextAlbumBtn.addEventListener('click', () => {
-    currentAlbumId = (currentAlbumId + 1) % albums.length;
+    const currentIndex = albums.findIndex(a => a.id === currentAlbumId);
+    const newIndex = (currentIndex + 1) % albums.length;
+    currentAlbumId = albums[newIndex].id;
     currentPhotoIndex = 0;
     updateModal();
 });
@@ -143,13 +236,11 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// fitur tambahan: album acak
 document.getElementById('randomAlbumBtn').addEventListener('click', () => {
-    const randomId = Math.floor(Math.random() * albums.length);
+    const randomId = albums[Math.floor(Math.random() * albums.length)].id;
     openAlbum(randomId);
 });
 
-// hujan hati
 document.getElementById('showerBtn').addEventListener('click', () => {
     for (let i = 0; i < 18; i++) {
         setTimeout(() => {
@@ -163,63 +254,9 @@ document.getElementById('showerBtn').addEventListener('click', () => {
             setTimeout(() => heart.remove(), 4000);
         }, i * 100);
     }
-    // tambah suara kecil (opsional)
     playPop();
 });
 
-// tambahan: klik di area kosong album keluarkan hati kecil
-document.querySelector('.book').addEventListener('click', (e) => {
-    if (!e.target.closest('.album-card') && !e.target.closest('.btn')) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerHTML = '💖';
-        heart.style.left = e.clientX + 'px';
-        heart.style.top = e.clientY + 'px';
-        heart.style.fontSize = '2rem';
-        heart.style.animation = 'fall 2s linear forwards';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 2000);
-        playPop();
-    }
-});
-
-// -------------------------------
-// Swipe gesture untuk foto di modal
-// -------------------------------
-let touchStartX = 0, touchStartY = 0;
-let touchEndX = 0, touchEndY = 0;
-const swipeThreshold = 50; // minimal jarak geser agar dianggap swipe
-
-const carouselMain = document.getElementById('carouselMain');
-if (carouselMain) {
-    carouselMain.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-        touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-
-    carouselMain.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        touchEndY = e.changedTouches[0].screenY;
-        handleSwipe();
-    }, { passive: true });
-}
-
-function handleSwipe() {
-    const diffX = touchEndX - touchStartX;
-    const diffY = touchEndY - touchStartY;
-    // Abaikan jika geser lebih vertikal atau jarak horizontal terlalu kecil
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
-        if (diffX > 0) {
-            // Geser ke kanan -> foto sebelumnya
-            prevPhotoBtn.click();
-        } else {
-            // Geser ke kiri -> foto berikutnya
-            nextPhotoBtn.click();
-        }
-    }
-}
-
-// Karakter beruang interaktif
 const bear = document.getElementById('bear');
 bear.addEventListener('click', () => {
     const messages = [
@@ -231,7 +268,6 @@ bear.addEventListener('click', () => {
     ];
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
     
-    // tampilkan tooltip sementara
     const tooltip = document.createElement('div');
     tooltip.classList.add('tooltip');
     tooltip.textContent = randomMsg;
@@ -240,11 +276,9 @@ bear.addEventListener('click', () => {
     document.body.appendChild(tooltip);
     setTimeout(() => tooltip.remove(), 2000);
     
-    // efek suara
     playPop();
 });
 
-// Fungsi untuk memainkan efek suara sederhana (menggunakan Web Audio API)
 function playPop() {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -259,7 +293,6 @@ function playPop() {
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.1);
     } catch (e) {
-        // browser mungkin tidak mendukung atau autoplay diblokir
     }
 }
 
