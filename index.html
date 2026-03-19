@@ -13,18 +13,18 @@
 <body>
     <div class="book-container">
         <div class="book" id="book">
-            <!-- Halaman akan diisi oleh JavaScript -->
+            <!-- Halaman akan di-generate oleh JS -->
         </div>
 
         <div class="book-nav">
-            <button class="btn-nav" id="prevPage"><i class="fa-regular fa-arrow-left"></i> Balik</button>
+            <button class="btn-nav" id="prevPage"><i class="fa-regular fa-arrow-left"></i> Sebelumnya</button>
             <span class="page-indicator" id="pageIndicator">Halaman 1</span>
-            <button class="btn-nav" id="nextPage">Balik <i class="fa-regular fa-arrow-right"></i></button>
+            <button class="btn-nav" id="nextPage">Berikutnya <i class="fa-regular fa-arrow-right"></i></button>
         </div>
 
         <div class="actions">
-            <button class="btn" id="randomAlbumBtn"><i class="fa-regular fa-star"></i> Album acak</button>
-            <button class="btn" id="showerBtn"><i class="fa-regular fa-heart"></i> Hujan hati</button>
+            <button class="btn" id="randomAlbumBtn"><i class="fa-regular fa-star"></i> Album Acak</button>
+            <button class="btn" id="showerBtn"><i class="fa-regular fa-heart"></i> Hujan Hati</button>
         </div>
 
         <footer class="footer">
@@ -32,18 +32,19 @@
         </footer>
     </div>
 
+    <!-- Modal Foto -->
     <div class="modal" id="albumModal">
         <div class="modal__content">
             <div class="modal__header">
-                <h2 class="modal__title" id="modalAlbumTitle">Judul Album</h2>
+                <h2 class="modal__title" id="modalAlbumTitle"></h2>
                 <button class="modal__close" id="closeModalBtn">&times;</button>
             </div>
             <div class="carousel">
                 <div class="carousel__main" id="carouselMain">
-                    <img id="modalImage" src="" alt="foto kenangan" class="carousel__image">
+                    <img id="modalImage" src="" alt="" class="carousel__image">
                 </div>
                 <div class="carousel__dots" id="dotContainer"></div>
-                <div class="carousel__caption" id="modalCaption">
+                <div class="carousel__caption">
                     <i class="fa-regular fa-message"></i>
                     <span id="captionText"></span>
                 </div>
@@ -53,8 +54,8 @@
                 <button class="modal__nav-btn" id="nextPhotoBtn">Berikutnya <i class="fa-regular fa-circle-right"></i></button>
             </div>
             <div class="modal__nav modal__nav--secondary">
-                <button class="modal__nav-btn" id="prevAlbumBtn"><i class="fa-regular fa-arrow-left"></i> Album sebelumnya</button>
-                <button class="modal__nav-btn" id="nextAlbumBtn">Album berikutnya <i class="fa-regular fa-arrow-right"></i></button>
+                <button class="modal__nav-btn" id="prevAlbumBtn"><i class="fa-regular fa-arrow-left"></i> Album Sebelumnya</button>
+                <button class="modal__nav-btn" id="nextAlbumBtn">Album Berikutnya <i class="fa-regular fa-arrow-right"></i></button>
             </div>
         </div>
     </div>

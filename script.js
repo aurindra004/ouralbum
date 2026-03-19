@@ -24,7 +24,6 @@ const albums = [
     }
 ];
 
-// ========== BUKU ==========
 const book = document.getElementById('book');
 let currentPage = 0;
 
@@ -55,20 +54,19 @@ function renderBook() {
         `;
         book.appendChild(page);
     });
-
     document.getElementById('pageIndicator').textContent = `Halaman ${currentPage + 1} dari ${albums.length}`;
 }
 
 function nextPage() {
     if (currentPage < albums.length - 1) {
-        const current = document.querySelector(`.page[data-id="${albums[currentPage].id}"]`);
-        const next = document.querySelector(`.page[data-id="${albums[currentPage + 1].id}"]`);
+        const currentPageElement = document.querySelector(`.page[data-id="${albums[currentPage].id}"]`);
+        const nextPageElement = document.querySelector(`.page[data-id="${albums[currentPage + 1].id}"]`);
         
-        current.classList.remove('active');
-        current.classList.add('flipped');
+        currentPageElement.classList.remove('active');
+        currentPageElement.classList.add('flipped');
         
-        next.classList.remove('prev');
-        next.classList.add('active');
+        nextPageElement.classList.remove('prev');
+        nextPageElement.classList.add('active');
         
         currentPage++;
         document.getElementById('pageIndicator').textContent = `Halaman ${currentPage + 1} dari ${albums.length}`;
@@ -79,14 +77,14 @@ function nextPage() {
 
 function prevPage() {
     if (currentPage > 0) {
-        const current = document.querySelector(`.page[data-id="${albums[currentPage].id}"]`);
-        const prev = document.querySelector(`.page[data-id="${albums[currentPage - 1].id}"]`);
+        const currentPageElement = document.querySelector(`.page[data-id="${albums[currentPage].id}"]`);
+        const prevPageElement = document.querySelector(`.page[data-id="${albums[currentPage - 1].id}"]`);
         
-        current.classList.remove('active');
-        current.classList.add('prev');
+        currentPageElement.classList.remove('active');
+        currentPageElement.classList.add('prev');
         
-        prev.classList.remove('flipped');
-        prev.classList.add('active');
+        prevPageElement.classList.remove('flipped');
+        prevPageElement.classList.add('active');
         
         currentPage--;
         document.getElementById('pageIndicator').textContent = `Halaman ${currentPage + 1} dari ${albums.length}`;
@@ -109,9 +107,9 @@ book.addEventListener('touchend', (e) => {
     const diff = touchEndX - touchStartX;
     if (Math.abs(diff) > 50) {
         if (diff > 0) {
-            prevPage();
+            prevPage(); // swipe kanan -> halaman sebelumnya
         } else {
-            nextPage();
+            nextPage(); // swipe kiri -> halaman berikutnya
         }
     }
 }, { passive: true });
@@ -292,8 +290,7 @@ function playPop() {
         gainNode.connect(audioCtx.destination);
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.1);
-    } catch (e) {
-    }
+    } catch (e) {}
 }
 
 document.addEventListener('DOMContentLoaded', function() {

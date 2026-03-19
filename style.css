@@ -6,22 +6,23 @@
 
 body {
     font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(135deg, #fdf6f0 0%, #f8e8ec 100%);
+    background: linear-gradient(145deg, #e8d1cb 0%, #f2dfd9 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem 1rem;
-    color: #4a4a4a;
+    color: #3a2e2b;
 }
 
 .book-container {
     max-width: 900px;
     width: 100%;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background: rgba(245, 235, 220, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 40px 40px 30px 30px;
+    padding: 2rem 2rem 2rem;
+    box-shadow: 0 25px 40px rgba(80, 50, 40, 0.25);
 }
 
 .book {
@@ -31,217 +32,243 @@ body {
     transform-style: preserve-3d;
     perspective: 3000px;
     margin-bottom: 2rem;
-    background: #8b5a2b; /* warna sampul coklat tua */
-    border-radius: 10px 20px 20px 10px;
+    background: #ac8e7a; /* warna sampul */
+    border-radius: 12px 8px 8px 12px;
     box-shadow: 
-        10px 10px 30px rgba(0,0,0,0.5),
-        inset -2px -2px 10px rgba(0,0,0,0.3),
-        inset 2px 2px 10px rgba(255,255,240,0.3);
-    border-left: 4px solid #5d3a1a; /* punggung buku */
+        0 15px 25px rgba(0,0,0,0.35),
+        0 0 0 1px #7b5f4b,
+        0 0 0 3px #b99e8b,
+        inset 0 -2px 5px rgba(0,0,0,0.2);
 }
 
-/* efek halaman */
+/* Halaman */
 .page {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    background: #fff9ef;
-    border-radius: 0 8px 8px 0;
-    padding: 2rem;
+    background: #fcf7f0;
+    background-image: 
+        linear-gradient(90deg, rgba(200,180,160,0.1) 0%, rgba(255,255,255,0.3) 5%, rgba(255,255,255,0) 10%),
+        radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0%, transparent 30%);
+    border-radius: 0 10px 10px 0;
+    box-shadow: 
+        inset -2px 0 5px rgba(0,0,0,0.1),
+        2px 0 10px rgba(0,0,0,0.1);
+    padding: 2rem 2rem 2rem 2.5rem;
     transform-origin: left center;
     transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
     backface-visibility: hidden;
-    box-shadow: 
-        inset -2px 0 10px rgba(0,0,0,0.1),
-        5px 5px 15px rgba(0,0,0,0.2);
-    border-left: 1px solid #c9ad9a;
+    border-left: 2px solid #9f8572;
     overflow-y: auto;
-    cursor: pointer;
 }
 
-/* halaman aktif (terbuka) */
+/* Halaman aktif */
 .page.active {
     transform: rotateY(0deg);
     z-index: 10;
+    box-shadow: 
+        inset -2px 0 5px rgba(0,0,0,0.1),
+        5px 5px 15px rgba(0,0,0,0.2);
 }
 
-/* halaman yang sudah dibalik ke kanan */
+/* Halaman yang sudah dibalik (ke kanan) */
 .page.flipped {
     transform: rotateY(-180deg);
     z-index: 5;
+    box-shadow: 
+        inset -2px 0 5px rgba(0,0,0,0.1),
+        -5px 5px 15px rgba(0,0,0,0.1);
 }
 
-/* halaman yang akan dibalik ke kiri */
+/* Halaman yang akan dibalik ke kiri (mundur) */
 .page.prev {
     transform: rotateY(180deg);
     z-index: 5;
+    box-shadow: 
+        inset -2px 0 5px rgba(0,0,0,0.1),
+        -5px 5px 15px rgba(0,0,0,0.1);
 }
 
-/* konten album */
+/* Sedikit efek lengkungan saat membalik (opsional) */
+.page.flipped, .page.prev {
+    filter: brightness(0.98);
+}
+
+/* Album item dalam halaman */
 .album-item {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     height: 100%;
     background: white;
-    border-radius: 16px;
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-    border: 1px solid #ffe3e3;
+    box-shadow: 0 10px 25px rgba(120, 70, 60, 0.15);
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: 1px solid #eedad0;
+    display: flex;
+    flex-direction: column;
 }
 
 .album-item:hover {
-    transform: scale(1.02);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px rgba(140, 80, 70, 0.25);
 }
 
 .album-cover {
     width: 100%;
     height: 280px;
-    background: #f5dadf;
+    background: #ebd2c8;
     overflow: hidden;
+    border-bottom: 2px solid #ffe5d9;
 }
 
 .album-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
+    transition: transform 0.6s ease;
 }
 
 .album-item:hover .album-cover img {
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
 
 .album-info {
-    padding: 1.8rem 1.5rem;
-    background: #fffafc;
+    padding: 1.5rem 1.8rem 2rem;
+    background: #fffbfa;
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
 }
 
 .album-title {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 500;
-    color: #b76e79;
+    color: #a5535e;
+    margin-bottom: 0.5rem;
     line-height: 1.2;
 }
 
 .album-date {
     font-size: 1rem;
-    color: #b4828f;
+    color: #b1757e;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px dashed #ecc8c0;
+    padding-bottom: 0.8rem;
 }
 
 .album-count {
     font-size: 1rem;
-    color: #996d7a;
-    border-top: 1px dashed #e5c5cc;
-    padding-top: 1rem;
+    color: #8f616b;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    font-weight: 500;
 }
 
-/* navigasi */
+/* Navigasi buku */
 .book-nav {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     flex-wrap: wrap;
 }
 
 .btn-nav {
-    background: white;
-    border: 2px solid #f0c0c7;
+    background: #fff5f0;
+    border: 2px solid #dbb6ab;
     padding: 0.8rem 2rem;
-    border-radius: 50px;
-    font-size: 1rem;
+    border-radius: 60px;
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #b45f6b;
+    color: #884d57;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 10px rgba(255,200,210,0.3);
-    display: flex;
+    transition: 0.2s;
+    display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.8rem;
+    box-shadow: 0 5px 10px rgba(180, 120, 110, 0.2);
 }
 
 .btn-nav:hover {
-    background: #fff0f3;
-    border-color: #e5989b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px #ffd9e2;
+    background: #ffeae3;
+    border-color: #c68176;
+    transform: scale(1.02);
+    box-shadow: 0 8px 15px rgba(180, 110, 100, 0.25);
 }
 
 .page-indicator {
     font-size: 1.2rem;
     font-weight: 600;
-    color: #a75868;
-    background: #ffeef2;
-    padding: 0.4rem 1.8rem;
-    border-radius: 40px;
-    border: 1px solid #fbc1cb;
-    box-shadow: inset 0 2px 5px rgba(255,255,255,0.8);
+    color: #794d55;
+    background: #ffede8;
+    padding: 0.5rem 1.8rem;
+    border-radius: 50px;
+    border: 1px solid #ecc0b5;
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.8);
 }
 
+/* Tombol aksi */
 .actions {
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     justify-content: center;
-    margin: 1.5rem 0;
+    margin: 2rem 0 1.5rem;
     flex-wrap: wrap;
 }
 
 .btn {
     background: white;
-    border: 1px solid #f0c0c7;
-    padding: 0.8rem 2rem;
+    border: 1px solid #ecc0b5;
+    padding: 0.9rem 2rem;
     border-radius: 50px;
     font-size: 1rem;
     font-weight: 500;
-    color: #b45f6b;
+    color: #884d57;
     cursor: pointer;
     transition: 0.2s;
-    box-shadow: 0 4px 8px rgba(255, 200, 210, 0.3);
+    box-shadow: 0 4px 10px rgba(230, 160, 150, 0.2);
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
 }
 
 .btn:hover {
-    background: #fff0f3;
-    border-color: #e5989b;
-    transform: scale(1.02) translateY(-2px);
-    box-shadow: 0 6px 12px #ffd9e2;
+    background: #fff2ed;
+    border-color: #d58f84;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px #f7cfc5;
 }
 
 .footer {
     text-align: center;
-    color: #ab7b87;
-    font-size: 0.95rem;
+    margin-top: 1rem;
+    color: #755a56;
+    font-size: 1rem;
 }
 
 .footer i {
-    color: #f2848e;
+    color: #d6737a;
 }
 
 .footer #randomQuote {
     font-style: italic;
-    font-weight: 500;
-    color: #b76e79;
+    font-weight: 600;
+    color: #aa5f68;
+    background: #fff1eb;
+    padding: 0.2rem 1rem;
+    border-radius: 30px;
+    display: inline-block;
 }
 
-/* modal */
+/* Modal (sama seperti sebelumnya) */
 .modal {
     display: none;
     position: fixed;
@@ -249,21 +276,21 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(6px);
+    background: rgba(40, 30, 25, 0.3);
+    backdrop-filter: blur(8px);
     align-items: center;
     justify-content: center;
     z-index: 1000;
 }
 
 .modal__content {
-    background: #fffbfd;
+    background: #fff9f5;
     width: 95%;
     max-width: 1000px;
     max-height: 90vh;
-    border-radius: 48px;
-    box-shadow: 0 30px 50px rgba(180, 100, 120, 0.25);
-    padding: 2rem;
+    border-radius: 50px;
+    box-shadow: 0 30px 50px rgba(120, 70, 60, 0.3);
+    padding: 2rem 2rem 2.2rem;
     border: 2px solid white;
     overflow-y: auto;
 }
@@ -274,14 +301,14 @@ body {
     align-items: center;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #ffd9e2;
+    border-bottom: 2px solid #fad8d0;
 }
 
 .modal__title {
     font-family: 'Playfair Display', serif;
     font-size: 2.2rem;
     font-weight: 400;
-    color: #b45f6b;
+    color: #a5535e;
 }
 
 .modal__close {
@@ -289,13 +316,13 @@ body {
     line-height: 1;
     background: none;
     border: none;
-    color: #d99ba6;
+    color: #cd8d86;
     cursor: pointer;
     transition: 0.2s;
 }
 
 .modal__close:hover {
-    color: #b1485a;
+    color: #a5434e;
     transform: rotate(90deg) scale(1.2);
 }
 
@@ -307,20 +334,23 @@ body {
 
 .carousel__main {
     width: 100%;
-    background: #f5e3e7;
-    border-radius: 32px;
+    background: #f0dbd5;
+    border-radius: 36px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid white;
-    box-shadow: 0 8px 20px #f5cdd6;
+    box-shadow: 0 8px 20px #ecc0b5;
 }
 
 .carousel__image {
     max-width: 100%;
     max-height: 60vh;
+    width: auto;
+    height: auto;
     object-fit: contain;
+    display: block;
 }
 
 .carousel__dots {
@@ -328,12 +358,13 @@ body {
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
+    margin: 0.5rem 0;
 }
 
 .dot {
     width: 12px;
     height: 12px;
-    background: #eed2d9;
+    background: #eed2c9;
     border-radius: 50%;
     cursor: pointer;
     transition: 0.2s;
@@ -341,27 +372,23 @@ body {
 }
 
 .dot.active {
-    background: #c9667a;
-    transform: scale(1.3);
-    box-shadow: 0 0 0 3px #ffd9e2;
+    background: #b55362;
+    transform: scale(1.4);
+    box-shadow: 0 0 0 3px #fad8d0;
 }
 
 .carousel__caption {
     background: white;
-    border-radius: 50px;
-    padding: 1.2rem 1.8rem;
+    border-radius: 60px;
+    padding: 1.2rem 2rem;
     font-size: 1.1rem;
-    color: #6d4c57;
-    border: 1px solid #ffd0da;
-    box-shadow: inset 0 1px 5px #ffe3ea;
+    color: #5b3e3a;
+    border: 1px solid #fbc5bc;
+    box-shadow: inset 0 1px 5px #fff0e8;
+    min-height: 5rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
-}
-
-.carousel__caption i {
-    color: #e5989b;
-    font-size: 1.4rem;
 }
 
 .modal__nav {
@@ -372,14 +399,18 @@ body {
     flex-wrap: wrap;
 }
 
+.modal__nav--secondary {
+    margin-top: 0.8rem;
+}
+
 .modal__nav-btn {
-    background: #fdeff2;
-    border: 1px solid #ffe0e8;
+    background: #fef0ec;
+    border: 1px solid #f5cdc2;
     padding: 0.8rem 1.8rem;
     border-radius: 40px;
     font-size: 1rem;
     font-weight: 500;
-    color: #a75868;
+    color: #9a5c5c;
     cursor: pointer;
     transition: 0.15s;
     display: inline-flex;
@@ -388,21 +419,21 @@ body {
 }
 
 .modal__nav-btn:hover {
-    background: #ffe3ea;
-    border-color: #e5989b;
+    background: #ffe3db;
+    border-color: #d58f84;
     transform: scale(0.98);
 }
 
-/* bear dan hati */
+/* Beruang dan hati */
 .bear {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    font-size: 3rem;
+    font-size: 3.5rem;
     cursor: pointer;
     transition: transform 0.3s;
     z-index: 100;
-    filter: drop-shadow(0 10px 10px rgba(255, 150, 150, 0.3));
+    filter: drop-shadow(0 10px 12px rgba(170, 100, 90, 0.3));
 }
 
 .bear:hover {
@@ -414,25 +445,28 @@ body {
 }
 
 .tooltip {
-    position: absolute;
+    position: fixed;
     background: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: #b76e79;
-    border: 1px solid #ffc0cb;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: #884d57;
+    border: 1px solid #ffbcb0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     pointer-events: none;
-    z-index: 1000;
+    z-index: 1001;
+    max-width: 200px;
+    text-align: center;
 }
 
 .heart {
     position: fixed;
     font-size: 1.8rem;
+    user-select: none;
     pointer-events: none;
     z-index: 9999;
     animation: fall 4s linear forwards;
-    color: #ff9eb5;
+    color: #ff8a9c;
 }
 
 @keyframes fall {
@@ -440,17 +474,17 @@ body {
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
-/* responsif */
+/* Responsif */
 @media (max-width: 700px) {
-    .book { height: 500px; }
+    .book { height: 480px; }
     .album-cover { height: 220px; }
     .album-title { font-size: 1.8rem; }
+    .page { padding: 1.5rem; }
 }
 
 @media (max-width: 500px) {
-    .book { height: 450px; }
+    .book { height: 420px; }
     .album-cover { height: 180px; }
     .album-title { font-size: 1.5rem; }
-    .book-nav { gap: 1rem; }
     .btn-nav { padding: 0.6rem 1.2rem; }
 }
