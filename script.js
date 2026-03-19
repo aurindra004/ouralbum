@@ -136,6 +136,7 @@ const prevPhotoBtn = document.getElementById('prevPhotoBtn');
 const nextPhotoBtn = document.getElementById('nextPhotoBtn');
 const prevAlbumBtn = document.getElementById('prevAlbumBtn');
 const nextAlbumBtn = document.getElementById('nextAlbumBtn');
+const carouselMain = document.getElementById('carouselMain'); // pastikan ini ada
 
 let currentAlbumId = 0;
 let currentPhotoIndex = 0;
@@ -168,6 +169,7 @@ function updateModal() {
     });
 }
 
+// Animasi (opsional, bisa dihapus jika tidak perlu)
 function changePhotoWithAnimation(direction) {
     const album = albums.find(a => a.id === currentAlbumId);
     let newIndex;
@@ -177,9 +179,7 @@ function changePhotoWithAnimation(direction) {
         newIndex = (currentPhotoIndex - 1 + album.photos.length) % album.photos.length;
     }
 
-    const carouselMain = document.getElementById('carouselMain');
     carouselMain.classList.add('flip-' + direction);
-
     setTimeout(() => {
         currentPhotoIndex = newIndex;
         updateModal();
@@ -233,6 +233,27 @@ document.addEventListener('keydown', (e) => {
         document.body.style.overflow = 'auto';
     }
 });
+
+// ===== SWIPE UNTUK FOTO DI MODAL (HP) =====
+let modalTouchStartX = 0;
+
+carouselMain.addEventListener('touchstart', (e) => {
+    modalTouchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+carouselMain.addEventListener('touchend', (e) => {
+    const modalTouchEndX = e.changedTouches[0].screenX;
+    const diff = modalTouchEndX - modalTouchStartX;
+    if (Math.abs(diff) > 50) { // ambang batas 50px
+        if (diff > 0) {
+            // Geser ke kanan -> foto sebelumnya
+            prevPhotoBtn.click();
+        } else {
+            // Geser ke kiri -> foto berikutnya
+            nextPhotoBtn.click();
+        }
+    }
+}, { passive: true });
 
 document.getElementById('randomAlbumBtn').addEventListener('click', () => {
     const randomId = albums[Math.floor(Math.random() * albums.length)].id;
